@@ -1,0 +1,21 @@
+// bigCat
+.cat(@size) when (@size <= 19) and (@size >=13) {
+    height: @size * 10px;
+}
+// smallCat
+.cat(@size) when (@size <13) {
+    height: @size * 5px;
+}
+// wssCat
+.cat(@size) when (default()) {
+    height: 666px;
+}
+.smallCat {
+    .cat(10);
+}
+.bigCat {
+    .cat(18);
+}
+.wssCat {
+    .cat(26);
+}
