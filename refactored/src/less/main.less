@@ -1,0 +1,206 @@
+// ============================================================
+// Main Styles
+// Demonstrates Less features: variables, mixins, nesting,
+// scope, operations, color functions, guarded mixins
+// ============================================================
+
+@import "variables";
+@import "mixins";
+
+// ------------------------------------------------------------
+// 1. Variables & Color Operations
+//    @light-blue = @nice-blue + #111
+// ------------------------------------------------------------
+#header {
+    color: @light-blue;
+    font-size: @font-size-base;
+}
+
+// ------------------------------------------------------------
+// 2. Built-in Color / Math Functions
+//    percentage(), saturate(), spin(), lighten()
+// ------------------------------------------------------------
+#header2 {
+    color: @color-dark;
+    height: percentage(0.5);                          // 0.5 -> 50%
+    font-size: saturate(@font-size-base + 2, 10%);   // increase saturation by 10%
+    background-color: spin(lighten(@color-dark, 25%), 10); // lighten 25%, hue +10
+}
+
+// ------------------------------------------------------------
+// 3. Mixins — basic & parameterless
+//    .my-mixin outputs its rules; .my-other-mixin() does not
+// ------------------------------------------------------------
+.cat,
+#wscat {
+    background-color: aquamarine;
+}
+
+#header3 {
+    .my-mixin;          // includes color: black
+    .my-other-mixin;    // includes background: white (parentheses optional)
+    .my-font-mixin();
+    #wscat;             // includes background-color: aquamarine
+}
+
+// ------------------------------------------------------------
+// 4. Nesting & Parent Selector (&)
+//    Demonstrates nested rules and & pseudo/modifier selectors
+// ------------------------------------------------------------
+#header4 {
+    color: @color-black;
+
+    .navigation {
+        font-size: @font-size-nav;
+    }
+
+    .logo {
+        width: @logo-width;
+    }
+
+    &:before {
+        content: "你好";
+    }
+
+    &-wsscat {
+        background-color: bisque;
+    }
+}
+
+// ------------------------------------------------------------
+// 5. Variable Scope
+//    Local @var overrides global @var inside #header5
+// ------------------------------------------------------------
+#header5 {
+    @var: red;   // local scope — shadows global @var: white
+
+    #logo {
+        color: @var; // red
+    }
+}
+
+// ------------------------------------------------------------
+// 6. Parametric Mixin
+//    .bg(@color, @size) applied to .background
+// ------------------------------------------------------------
+.background {
+    .bg(@color-bg, @font-size-bg);
+}
+
+// ------------------------------------------------------------
+// 7. Guarded Mixins (Conditional)
+//    .cat(@size) with three guard conditions
+// ------------------------------------------------------------
+.smallCat {
+    .cat(10);   // size < 13  → height: 50px
+}
+
+.bigCat {
+    .cat(18);   // 13 ≤ size ≤ 19 → height: 180px
+}
+
+.wssCat {
+    .cat(26);   // default() → height: 666px
+}
+
+// ------------------------------------------------------------
+// 8. Extend
+//    :extend() shares rules between selectors without copying
+// ------------------------------------------------------------
+.base-card {
+    border:        @shared-border;
+    border-radius: @border-radius;
+    padding:       @base-padding;
+    background:    @color-white;
+}
+
+.info-card {
+    &:extend(.base-card);   // inherits .base-card rules
+    color: @nice-blue;
+}
+
+.warn-card {
+    &:extend(.base-card);
+    color: darken(orange, 10%);
+}
+
+// ------------------------------------------------------------
+// 9. Mixin Default Parameters & Variadic Arguments
+//    .bordered() with defaults; .shadow() with @rest
+// ------------------------------------------------------------
+.card-default {
+    .bordered();                                    // uses all defaults
+}
+
+.card-custom {
+    .bordered(2px, dashed, @nice-blue);             // override all
+}
+
+.card-shadow {
+    .shadow(0 2px 4px rgba(0,0,0,.15),
+            0 4px 12px rgba(0,0,0,.1));             // variadic: multiple shadows
+}
+
+// ------------------------------------------------------------
+// 10. Mixin with !important
+//     Appends !important to every property in the mixin
+// ------------------------------------------------------------
+.reset-element {
+    .reset-box();
+}
+
+// ------------------------------------------------------------
+// 11. Namespace
+//     Access mixins scoped inside a namespace (#bundle)
+// ------------------------------------------------------------
+.btn-primary {
+    #bundle.button();
+}
+
+.nav-link {
+    #bundle.link();
+}
+
+// ------------------------------------------------------------
+// 12. String Interpolation (@{variable})
+//     Embed variable values inside strings / selectors
+// ------------------------------------------------------------
+@selector: banner;
+
+.@{selector} {                                      // → .banner { ... }
+    background-image: url("@{assets-url}/bg.png"); // → url("/assets/images/bg.png")
+    font-family: "Theme-@{theme}";                  // → "Theme-dark"
+}
+
+// ------------------------------------------------------------
+// 13. Loops (recursive mixin)
+//     Generate a simple N-column grid system
+// ------------------------------------------------------------
+.generate-columns(@n, @i: 1) when (@i =< @n) {
+    .col-@{i} {
+        width: (@i * 100% / @n);
+    }
+    .generate-columns(@n, (@i + 1));   // recurse
+}
+
+.generate-columns(@columns);   // generates .col-1 ~ .col-4
+
+// ------------------------------------------------------------
+// 14. each() — iterate over a list
+//     Generate theme-color utility classes
+// ------------------------------------------------------------
+@theme-colors: {
+    primary:   @nice-blue;
+    success:   #52c41a;
+    warning:   #faad14;
+    danger:    #ff4d4f;
+}
+
+each(@theme-colors, {
+    .text-@{key} {
+        color: @value;
+    }
+    .bg-@{key} {
+        background-color: @value;
+    }
+});

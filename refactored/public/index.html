@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Less CSS Demo</title>
+    <!-- Compiled CSS (production) -->
+    <!-- <link rel="stylesheet" href="../css/main.css"> -->
+
+    <!-- Less source (development — compiled in browser via less.js) -->
+    <link rel="stylesheet/less" type="text/css" href="../src/less/main.less">
+    <script src="../src/js/less.min.js"></script>
+
+    <style>
+        /* Page layout for demo readability */
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        section {
+            margin-bottom: 30px;
+            padding: 16px 20px;
+            background: #fff;
+            border-radius: 6px;
+            box-shadow: 0 1px 4px rgba(0,0,0,.1);
+        }
+        h2 {
+            margin: 0 0 10px;
+            font-size: 14px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. Variables & Color Operations -->
+    <section>
+        <h2>1. Variables &amp; Color Operations</h2>
+        <header id="header">@light-blue = @nice-blue + #111</header>
+    </section>
+
+    <!-- 2. Built-in Color / Math Functions -->
+    <section>
+        <h2>2. Color Functions (percentage / saturate / spin / lighten)</h2>
+        <header id="header2">color-dark with functions applied</header>
+    </section>
+
+    <!-- 3. Mixins -->
+    <section>
+        <h2>3. Mixins</h2>
+        <header id="header3">Composed via .my-mixin, .my-other-mixin, .my-font-mixin, #wscat</header>
+    </section>
+
+    <!-- 4. Nesting & Parent Selector -->
+    <section>
+        <h2>4. Nesting &amp; Parent Selector (&amp;)</h2>
+        <header id="header4">
+            <p id="header4-wsscat">text — &amp;-wsscat modifier</p>
+            <p class="navigation">Nav — nested .navigation</p>
+            <p class="logo">Logo — nested .logo</p>
+        </header>
+    </section>
+
+    <!-- 5. Variable Scope -->
+    <section>
+        <h2>5. Variable Scope</h2>
+        <header id="header5">
+            <p id="logo">logo — local @var: red overrides global @var: white</p>
+        </header>
+    </section>
+
+    <!-- 6. Parametric Mixin -->
+    <section>
+        <h2>6. Parametric Mixin .bg(@color, @size)</h2>
+        <header class="background">
+            <p id="logo">logo — .bg(#555555, 16px)</p>
+        </header>
+    </section>
+
+    <!-- 7. Guarded Mixins -->
+    <section>
+        <h2>7. Guarded Mixins (Conditional)</h2>
+        <div class="smallCat">smallCat — .cat(10) → height: 50px</div>
+        <div class="bigCat">bigCat — .cat(18) → height: 180px</div>
+        <div class="wssCat">wssCat — .cat(26) → height: 666px (default)</div>
+    </section>
+
+    <!-- 8. Extend -->
+    <section>
+        <h2>8. Extend (:extend)</h2>
+        <div class="base-card">base-card — defines shared border/padding/radius</div>
+        <div class="info-card">info-card — extends .base-card, adds blue color</div>
+        <div class="warn-card">warn-card — extends .base-card, adds orange color</div>
+    </section>
+
+    <!-- 9. Mixin Default Parameters & Variadic Arguments -->
+    <section>
+        <h2>9. Default Parameters &amp; Variadic Arguments (@rest)</h2>
+        <div class="card-default">card-default — .bordered() with all defaults</div>
+        <div class="card-custom">card-custom — .bordered(2px, dashed, @nice-blue)</div>
+        <div class="card-shadow">card-shadow — .shadow(multiple shadows via @rest)</div>
+    </section>
+
+    <!-- 10. Mixin with !important -->
+    <section>
+        <h2>10. Mixin with !important</h2>
+        <div class="reset-element" style="margin:20px;padding:20px;background:#ffd;">
+            reset-element — .reset-box() forces margin/padding: 0 !important
+        </div>
+    </section>
+
+    <!-- 11. Namespace -->
+    <section>
+        <h2>11. Namespace (#bundle)</h2>
+        <div class="btn-primary">#bundle.button() — namespaced button mixin</div>
+        <div class="nav-link">#bundle.link() — namespaced link mixin</div>
+    </section>
+
+    <!-- 12. String Interpolation -->
+    <section>
+        <h2>12. String Interpolation (@{variable})</h2>
+        <div class="banner">
+            .banner — selector built from @{selector}; bg-image from @{assets-url}; font from @{theme}
+        </div>
+    </section>
+
+    <!-- 13. Loops (recursive mixin) -->
+    <section>
+        <h2>13. Loops — Recursive Mixin (Grid Columns)</h2>
+        <div style="display:flex;gap:4px;">
+            <div class="col-1" style="background:#5B83AD;color:#fff;text-align:center;">col-1</div>
+            <div class="col-2" style="background:#6c94be;color:#fff;text-align:center;">col-2</div>
+            <div class="col-3" style="background:#7da5cf;color:#fff;text-align:center;">col-3</div>
+            <div class="col-4" style="background:#8eb6e0;color:#fff;text-align:center;">col-4</div>
+        </div>
+    </section>
+
+    <!-- 14. each() -->
+    <section>
+        <h2>14. each() — Iterate Over a Map</h2>
+        <div class="text-primary">text-primary</div>
+        <div class="text-success">text-success</div>
+        <div class="text-warning">text-warning</div>
+        <div class="text-danger">text-danger</div>
+        <br>
+        <div class="bg-primary" style="padding:4px 8px;color:#fff;display:inline-block;margin:2px;">bg-primary</div>
+        <div class="bg-success" style="padding:4px 8px;color:#fff;display:inline-block;margin:2px;">bg-success</div>
+        <div class="bg-warning" style="padding:4px 8px;color:#fff;display:inline-block;margin:2px;">bg-warning</div>
+        <div class="bg-danger"  style="padding:4px 8px;color:#fff;display:inline-block;margin:2px;">bg-danger</div>
+    </section>
+
+</body>
+</html>

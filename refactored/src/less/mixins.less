@@ -1,0 +1,89 @@
+// ============================================================
+// Mixins
+// Reusable style blocks (mixins) for the Less demo project
+// ============================================================
+
+@import "variables";
+
+// -- Basic mixin (included in output) --
+.my-mixin {
+    color: @color-black;
+}
+
+// -- Parameterless mixin (excluded from output, call-only) --
+.my-other-mixin() {
+    background: @color-white;
+}
+
+// -- Font mixin --
+.my-font-mixin {
+    font-size: @font-size-logo;
+}
+
+// -- Parametric mixin: background + font-size --
+.bg(@color, @size) {
+    background-color: @color;
+    font-size: @size;
+}
+
+// -- Parametric mixin with default values --
+.bordered(@width: 1px, @style: solid, @color: #ccc) {
+    border: @width @style @color;
+    border-radius: @border-radius;
+}
+
+// -- Mixin with @rest (variadic arguments) --
+.shadow(@shadows...) {
+    box-shadow: @shadows;
+}
+
+// -- Mixin with !important --
+.reset-box() {
+    margin:  0 !important;
+    padding: 0 !important;
+}
+
+// ============================================================
+// Namespace
+// Group related mixins under a namespace to avoid conflicts
+// ============================================================
+#bundle {
+    .button() {
+        display:          inline-block;
+        padding:          @base-padding @base-padding * 2;
+        background-color: @nice-blue;
+        color:            @color-white;
+        border-radius:    @border-radius;
+        cursor:           pointer;
+        &:hover {
+            background-color: @light-blue;
+        }
+    }
+    .link() {
+        color:           @nice-blue;
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+// ============================================================
+// Guarded Mixins (Conditional Mixins)
+// Demonstrates Less mixin guards (like if/else)
+// ============================================================
+
+// bigCat: size between 13 and 19 (inclusive)
+.cat(@size) when (@size <= 19) and (@size >= 13) {
+    height: @size * 10px;
+}
+
+// smallCat: size less than 13
+.cat(@size) when (@size < 13) {
+    height: @size * 5px;
+}
+
+// wssCat: default (all other cases)
+.cat(@size) when (default()) {
+    height: 666px;
+}
